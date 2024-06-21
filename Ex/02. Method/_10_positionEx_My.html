@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/jquery-3.7.1.min.js"></script>
+    <style>
+        body {
+            font-size: 9pt;
+        }
+
+        #panel {
+            width: 600px;
+            height: 300px;
+            border: 1px solid #999;
+            position: relative;
+        }
+
+        #bar {
+            position: absolute;
+            left: 50px;
+            top: 190px;
+            width: 500px;
+            height: 20px;
+            background: red;
+        }
+
+        #fish {
+            position: absolute;
+            left: 50px;
+            top: 120px;
+        }
+
+        #nav {
+            text-align: center;
+            width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div id="panel">
+            <div id="bar"></div>
+            <img src="images/fish1.png" alt="물고기" id="fish">
+        </div>
+        <div id="nav">
+            <button type="button" id="btn-start">시작</button>
+            <button type="button" id="btn-stop">멈춤</button>
+            <button type="button" id="btn-boost-up">부스트업</button>
+            <button type="button" id="btn-boost-down">부스트다운</button>
+            <button type="button" id="btn-boost-random">랜덤부스트</button>
+        </div>
+    </div>
+    <script>
+        $(()=>{
+            // 시작버튼을 클릭하면 300ms마다 오른쪽으로 5px 씩 이동
+            // left 값이 430px보다 커지면 이미지를 fish2로 변경하고 왼쪽으로 50px씩 이동
+            // left 값이 50px보다 작아지면 이미지를 fish1으로 변경하고 오른쪽으로 50px씩 이동
+            let move = Math.random();
+            let interval;
+            let left = $("#fish").position().left;
+            let boost = 1;
+
+            $("#btn-start").on("click", (e)=>{
+                // if(interval) clearInterval(interval);
+                if(!interval){
+                interval = setInterval(()=>{
+                    console.log($("#fish").position().left);
+                    left += move * boost;
+                    if(left > 430){
+                        $("#fish").attr("src", "images/fish2.png");
+                        move = -Math.random();
+                    }
+
+                    if(left < 50){
+                        $("#fish").attr("src", "images/fish1.png");
+                        move = Math.random();
+                    }
+                    $("#fish").css("left", left);
+
+                }, 10);
+            }
+            });
+
+            $("#btn-stop").on("click", (e)=>{
+                if(interval){
+                    clearInterval(interval);
+                    interval = null;
+                }
+            });
+            $("#btn-boost-up").on("click", (e)=>{
+                boost += 1;
+            });
+            $("#btn-boost-down").on("click", (e)=>{
+                if(boost > 1)
+                    boost -= 1;
+            });
+            $("#btn-boost-random").on("click", (e)=>{
+
+                boost = Math.floor(Math.random() * 100) + 1;
+            });
+        });
+    </script>
+</body>
+</html>

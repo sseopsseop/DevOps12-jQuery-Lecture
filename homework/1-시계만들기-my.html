@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <style>
+        #clock {
+            width: 400px;
+            height: 200px;
+            text-align: center;
+            line-height: 200px;
+
+            border: 2px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <div id="clock">
+        00:00.00
+    </div>
+    <script>
+        /*
+            미션: 시계 만들기
+
+            현재 시간을 02:03:05처럼 출력되게 만들어 주면 됩니다.
+            1초가 지날 때 마다 시간이 바뀌게 구현하면 됩니다.
+        */
+       $(()=>{
+            const date = new Date();
+            
+            let hour = date.getHours();
+            let minute = date.getMinutes();
+            let second = date.getSeconds();
+
+            const interval = setInterval(()=>{
+                second += 1;
+                if(second === 60){
+                    minute += 1;
+                    second = 0;
+                }
+                
+                if(minute === 60){
+                    minute = 0;
+                    hour += 1;
+                }
+
+                if(hour === 24){
+                    hour = 0;
+                }
+                
+                let text = hour > 10 ? `${hour}` : `0${hour}`;
+                text += ":"
+                text += minute > 10 ? `${minute}` : `0${minute}`;
+                text += ":"
+                text += second > 10 ? `${second}` : `0${second}`;
+                
+                $("#clock").text(text);
+
+            }, 1000);
+       });
+    </script>
+</body>
+</html>
